@@ -1,5 +1,6 @@
 package com.aacode.bietdiet.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,14 +15,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "customer_email")
     private String customerEmail;
 
+    @Column(name = "restaurant_name")
     private String restaurantName;
 
+    @Column(name = "items", columnDefinition = "LONGTEXT")
     private String items;
 
+    @Column(name = "total_amount")
     private Double totalAmount;
 
+    @Column(name = "delivery_address", columnDefinition = "TEXT")
     private String deliveryAddress;
 
     private String status;

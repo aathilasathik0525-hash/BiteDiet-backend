@@ -34,16 +34,30 @@ public class OrderController {
     // ==========================================
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(
+    public ResponseEntity<?> createOrder(
             @RequestBody Order order) {
+
+        if (order.getCustomerEmail() == null || order.getCustomerEmail().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Customer email is required.");
+        }
+
+        if (order.getItems() == null || order.getItems().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Order items cannot be empty.");
+        }
+
+        if (order.getTotalAmount() == null || order.getTotalAmount() < 0) {
+            return ResponseEntity.badRequest().body("Valid total amount is required.");
+        }
 
         // New orders always start as Order Confirmed
         order.setStatus("Order Confirmed");
 
         // Save current date/time
-        order.setOrderDate(
-                LocalDateTime.now().toString()
-        );
+        if (order.getOrderDate() == null || order.getOrderDate().trim().isEmpty()) {
+            order.setOrderDate(
+                    LocalDateTime.now().toString()
+            );
+        }
 
         Order savedOrder =
                 orderRepository.save(order);
